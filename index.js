@@ -267,22 +267,22 @@ app.delete('/qrcode/del', (req, res) => {
 })
 
 
-exports.countAllUsers = async (req, res) => {
-    const uId = req.params.id;
-    db.query(
-        "SELECT COUNT(*) FROM users WHERE id = ?",
-        [uId],
-        (err, count) => {
-            if (err) {
-                res.status(500).json({ err });
-                console.log(err);
-            } else {
-                console.log(count)
-                res.status(200).json(count);
-            }
-        }
-    );
-};
+// exports.countAllUsers = async (req, res) => {
+//     const uId = req.params.id;
+//     db.query(
+//         "SELECT COUNT(*) FROM users WHERE id = ?",
+//         [uId],
+//         (err, count) => {
+//             if (err) {
+//                 res.status(500).json({ err });
+//                 console.log(err);
+//             } else {
+//                 console.log(count)
+//                 res.status(200).json(count);
+//             }
+//         }
+//     );
+// };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// Other Backend ///////////////////////////////////////
