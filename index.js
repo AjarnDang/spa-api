@@ -184,7 +184,7 @@ app.get('/users/:id', (req, res) => {
 })
 
 //Update user
-app.put('/usersupdate/:id', (req, res) => {
+app.put('/userupdate/:id', (req, res) => {
     const userId = req.params.id;
     const q = "UPDATE users SET `title` = ?, `fname` = ?, `lname` = ?,`age` = ?,`phone` = ?, `email` = ?, `jobtitle` = ?,`company` = ?,`description` = ? WHERE id = ?";
 
