@@ -75,7 +75,7 @@ app.post('/regadmin', (req, res) => {
 })
 
 //Delete admin by ID
-app.delete("/admin/:id", (req, res) => {
+app.delete("/deleteadmin/:id", (req, res) => {
     const adminId = req.params.id;
     const q = "DELETE FROM admin WHERE id = ?";
 
@@ -86,7 +86,7 @@ app.delete("/admin/:id", (req, res) => {
 });
 
 //Update admin
-app.put("/admin/:id", (req, res) => {
+app.put("/updateadmin/:id", (req, res) => {
     const adminId = req.params.id;
     const q = "UPDATE admin SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `email` = ? WHERE id = ?";
 
