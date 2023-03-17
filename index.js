@@ -20,7 +20,12 @@ const secret = "TheSuperAppIoT-RegSystems"
 app.use(express.json());
 app.use(cors());
 
-const db = mysql2.createConnection(process.env.DATABASE_URL)
+const db = mysql2.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'the_superapp_iot'
+  });
 
 app.get("/", (req, res) => {
     res.json("This is server-side. AKA Backend")
@@ -149,10 +154,9 @@ app.get('/users', (req, res) => {
     });
 });
 
-
-//Add users 2
-app.post('/reguser', (req, res) => {
-    const q = "INSERT INTO users(`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
+//Add users
+app.post('/useradd', (req, res) => {
+    const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
     const values = [
         req.body.title,
         req.body.fname,
@@ -167,8 +171,8 @@ app.post('/reguser', (req, res) => {
     db.query(q, [values], (err, data) => {
         if (err) return res.json(err)
         return res.json(data)
-    });
-});
+    })
+})
 
 //Fetch user by ID
 app.get('/users/:id', (req, res) => {
@@ -186,7 +190,7 @@ app.get('/users/:id', (req, res) => {
 })
 
 //Update user
-app.put('/userupdate/:id', (req, res) => {
+app.put('/usersupdate/:id', (req, res) => {
     const userId = req.params.id;
     const q = "UPDATE users SET `title` = ?, `fname` = ?, `lname` = ?,`age` = ?,`phone` = ?, `email` = ?, `jobtitle` = ?,`company` = ?,`description` = ? WHERE id = ?";
 
@@ -231,9 +235,9 @@ app.post('/qrcode', (req, res) => {
     let description = req.body.description;
 
     console.log(req);
-    if (!title || !fname || !lname || !phone || !email || !company || !jobtitle || !company) {
+    if (!title || !fname || !lname || !phone || !email || !company || !phone || !jobtitle || !company) {
         console.log(res);
-        return res.status(400).send({ error: true, message: "Some of the fields are required" });
+        return res.status(400).send({ error: true, message: "enter register" });
     } else {
         db.query('INSERT INTO users (title, fname, lname, age, phone, email, jobtitle, company, description) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [title, fname, lname, age, phone, email, jobtitle, company, description],
