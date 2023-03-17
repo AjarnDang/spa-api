@@ -151,7 +151,7 @@ app.get('/users', (req, res) => {
 
 //Add users
 app.post('/useradd', (req, res) => {
-    const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
+    const q = "INSERT INTO users(`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
     const values = [
         req.body.title,
         req.body.fname,
@@ -166,7 +166,7 @@ app.post('/useradd', (req, res) => {
     db.query(q, [values], (err, data) => {
         if (err) return res.json(err)
         return res.json(data)
-    })
+    });
 })
 
 //Fetch user by ID
@@ -230,9 +230,9 @@ app.post('/qrcode', (req, res) => {
     let description = req.body.description;
 
     console.log(req);
-    if (!title || !fname || !lname || !phone || !email || !company || !phone || !jobtitle || !company) {
+    if (!title || !fname || !lname || !phone || !email || !company || !jobtitle || !company) {
         console.log(res);
-        return res.status(400).send({ error: true, message: "enter register" });
+        return res.status(400).send({ error: true, message: "Some of the fields are required" });
     } else {
         db.query('INSERT INTO users (title, fname, lname, age, phone, email, jobtitle, company, description) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [title, fname, lname, age, phone, email, jobtitle, company, description],
