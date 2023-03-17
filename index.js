@@ -149,7 +149,7 @@ app.get('/users', (req, res) => {
 });
 
 //Add users
-app.post('/users', (req, res) => {
+app.post('/useradd', (req, res) => {
     const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
     const values = [
         req.body.title,
