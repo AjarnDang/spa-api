@@ -20,12 +20,7 @@ const secret = "TheSuperAppIoT-RegSystems"
 app.use(express.json());
 app.use(cors());
 
-const db = mysql2.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'the_superapp_iot'
-  });
+const db = mysql2.createConnection(process.env.DATABASE_URL);
 
 app.get("/", (req, res) => {
     res.json("This is server-side. AKA Backend")
