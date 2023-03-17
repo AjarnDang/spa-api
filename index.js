@@ -149,8 +149,9 @@ app.get('/users', (req, res) => {
     });
 });
 
-//Add users
-app.post('/useradd', (req, res) => {
+
+//Add users 2
+app.post('/reguser', (req, res) => {
     const q = "INSERT INTO users(`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
     const values = [
         req.body.title,
@@ -167,7 +168,7 @@ app.post('/useradd', (req, res) => {
         if (err) return res.json(err)
         return res.json(data)
     });
-})
+});
 
 //Fetch user by ID
 app.get('/users/:id', (req, res) => {
