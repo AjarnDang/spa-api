@@ -31,208 +31,208 @@ app.get("/", (req, res) => {
 ///////////////////////////////////// Admin Section ////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-//Fetch admin
-app.get('/admin', (req, res) => {
-    const q = "SELECT * FROM admin"
-    db.query(q, (err, data) => {
-        if (err) return res.status(500).json({
-            "status": 500,
-            "message": "Internal Server Error",
-        })
-        return res.json(data)
-    });
-});
-
-//Fetch admin by ID
-app.get('/admin/:id', (req, res) => {
-    let id = req.params.id;
-    db.query("SELECT * FROM admin WHERE id = ?", id, (error, results, fields) => {
-        if (error) throw error;
-        let message = "";
-        if (results === undefined || results.length == 0) {
-            message = "admin not found"
-        } else {
-            message = "successfuly retrieved admin data"
-        }
-        return res.send({ error: false, data: results[0], message: message })
-    })
-})
-
-//Creat admin
-app.post('/regadmin', (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-        const q = "INSERT INTO admin (`username`,`password`,`fname`,`lname`,`email`) VALUES (?)"
-        const values = [
-            req.body.username,
-            hash,
-            req.body.fname,
-            req.body.lname,
-            req.body.email,
-        ];
-        db.query(q, [values], (err, data) => {
-            if (err) return res.json(err)
-            return res.json(data)
-        })
-    });
-})
-
-//Delete admin by ID
-app.delete("/deleteadmin/:id", (req, res) => {
-    const adminId = req.params.id;
-    const q = "DELETE FROM admin WHERE id = ?";
-
-    db.query(q, [adminId], (err, data) => {
-        if (err) return res.json(err)
-        return res.json("Admin has been deleted successfully")
-    });
-});
-
-//Update admin
-app.put("/updateadmin/:id", (req, res) => {
-    const adminId = req.params.id;
-    const q = "UPDATE admin SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `email` = ? WHERE id = ?";
-
-    const values = [
-        req.body.username,
-        req.body.password,
-        req.body.fname,
-        req.body.lname,
-        req.body.email,
-    ];
-    db.query(q, [...values, adminId], (err, data) => {
-        if (err) return res.json(err)
-        return res.json("Admin has been updated successfully")
-    });
-});
-
-// Admin Routes Login
-app.post('/login', jsonParser, function (req, res, next) {
-    db.execute(
-        'SELECT * FROM admin WHERE username = ?',
-        [req.body.username,],
-        function (err, admin, fields) {
-            if (err) { res.json({ status: 'error', message: err }); return }
-            if (admin.length == 0) { res.json({ status: 'error', message: 'no user found' }); return }
-            bcrypt.compare(req.body.password, admin[0].password, function (err, isLogin) {
-                if (isLogin) {
-                    var token = jwt.sign({ email: admin[0].email }, secret);
-                    res.json({ status: "ok", message: 'login success', token })
-                } else {
-                    res.json({ status: "error", message: 'login fail' })
-                }
-            });
-        }
-    );
-});
-
-// Authentication Admin
-app.post('/auth', jsonParser, function (req, res, next) {
-    try {
-        const token = req.headers.authorization.split(' ')[1]
-        var decoded = jwt.verify(token, secret);
-        res.json({ status: 'ok', decoded })
-    } catch (err) {
-        res.json({ status: 'err', message: err.message })
-    }
-});
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////// User Section ////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-
-//Fetch users
-app.get('/users', (req, res) => {
-    const q = "SELECT * FROM users"
-    db.query(q, (err, data) => {
-        if (err) return res.json(err)
-        return res.json(data)
-    });
-});
-
-//Fetch users email
-// app.get('/useremail/:email', (req, res) => {
-//     let email = req.params.email;
-//     db.query("SELECT * FROM users WHERE email = ?", email,
-//         (err, results, fields) => {
-//             if (err) return res.json(err)
-//             let message = "";
-//             if (results === undefined || results.length == 0) {
-//                 message = "email not found"
-//             } else {
-//                 message = "successfuly retrieved email data"
-//             }
-//             return res.send({ error: false, data: results[0], message: message })
+// //Fetch admin
+// app.get('/admin', (req, res) => {
+//     const q = "SELECT * FROM admin"
+//     db.query(q, (err, data) => {
+//         if (err) return res.status(500).json({
+//             "status": 500,
+//             "message": "Internal Server Error",
 //         })
+//         return res.json(data)
+//     });
 // });
 
-//Add users
-app.post('/useradd', (req, res) => {
-    const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
-    const values = [
-        req.body.title,
-        req.body.fname,
-        req.body.lname,
-        req.body.age,
-        req.body.phone,
-        req.body.email,
-        req.body.jobtitle,
-        req.body.company,
-        req.body.description,
-    ];
-    db.query(q, [values], (err, data) => {
-        if (err) return res.json(err)
-        return res.json(data)
-    })
-})
+// //Fetch admin by ID
+// app.get('/admin/:id', (req, res) => {
+//     let id = req.params.id;
+//     db.query("SELECT * FROM admin WHERE id = ?", id, (error, results, fields) => {
+//         if (error) throw error;
+//         let message = "";
+//         if (results === undefined || results.length == 0) {
+//             message = "admin not found"
+//         } else {
+//             message = "successfuly retrieved admin data"
+//         }
+//         return res.send({ error: false, data: results[0], message: message })
+//     })
+// })
 
-//Fetch user by ID
-app.get('/users/:id', (req, res) => {
-    let id = req.params.id;
-    db.query("SELECT * FROM users WHERE id = ?", id, (error, results, fields) => {
-        if (error) throw error;
-        let message = "";
-        if (results === undefined || results.length == 0) {
-            message = "users not found"
-        } else {
-            message = "successfuly retrieved users data"
-        }
-        return res.send({ error: false, data: results[0], message: message })
-    })
-})
+// //Creat admin
+// app.post('/regadmin', (req, res) => {
+//     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+//         const q = "INSERT INTO admin (`username`,`password`,`fname`,`lname`,`email`) VALUES (?)"
+//         const values = [
+//             req.body.username,
+//             hash,
+//             req.body.fname,
+//             req.body.lname,
+//             req.body.email,
+//         ];
+//         db.query(q, [values], (err, data) => {
+//             if (err) return res.json(err)
+//             return res.json(data)
+//         })
+//     });
+// })
 
-//Update user
-app.put('/usersupdate/:id', (req, res) => {
-    const userId = req.params.id;
-    const q = "UPDATE users SET `title` = ?, `fname` = ?, `lname` = ?,`age` = ?,`phone` = ?, `email` = ?, `jobtitle` = ?,`company` = ?,`description` = ? WHERE id = ?";
+// //Delete admin by ID
+// app.delete("/deleteadmin/:id", (req, res) => {
+//     const adminId = req.params.id;
+//     const q = "DELETE FROM admin WHERE id = ?";
 
-    const values = [
-        req.body.title,
-        req.body.fname,
-        req.body.lname,
-        req.body.age,
-        req.body.phone,
-        req.body.email,
-        req.body.jobtitle,
-        req.body.company,
-        req.body.description,
-    ];
-    db.query(q, [...values, userId], (err, data) => {
-        if (err) return res.json(err)
-        return res.json("Users has been updated successfully")
-    });
-})
+//     db.query(q, [adminId], (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json("Admin has been deleted successfully")
+//     });
+// });
 
-//Delete user by ID
-app.delete("/deleteuser/:id", (req, res) => {
-    const userId = req.params.id;
-    const q = "DELETE FROM users WHERE id = ?";
+// //Update admin
+// app.put("/updateadmin/:id", (req, res) => {
+//     const adminId = req.params.id;
+//     const q = "UPDATE admin SET `username` = ?, `password` = ?, `fname` = ?, `lname` = ?, `email` = ? WHERE id = ?";
 
-    db.query(q, [userId], (err, data) => {
-        if (err) return res.json(err)
-        return res.json("User has been deleted successfully")
-    });
-});
+//     const values = [
+//         req.body.username,
+//         req.body.password,
+//         req.body.fname,
+//         req.body.lname,
+//         req.body.email,
+//     ];
+//     db.query(q, [...values, adminId], (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json("Admin has been updated successfully")
+//     });
+// });
+
+// // Admin Routes Login
+// app.post('/login', jsonParser, function (req, res, next) {
+//     db.execute(
+//         'SELECT * FROM admin WHERE username = ?',
+//         [req.body.username,],
+//         function (err, admin, fields) {
+//             if (err) { res.json({ status: 'error', message: err }); return }
+//             if (admin.length == 0) { res.json({ status: 'error', message: 'no user found' }); return }
+//             bcrypt.compare(req.body.password, admin[0].password, function (err, isLogin) {
+//                 if (isLogin) {
+//                     var token = jwt.sign({ email: admin[0].email }, secret);
+//                     res.json({ status: "ok", message: 'login success', token })
+//                 } else {
+//                     res.json({ status: "error", message: 'login fail' })
+//                 }
+//             });
+//         }
+//     );
+// });
+
+// // Authentication Admin
+// app.post('/auth', jsonParser, function (req, res, next) {
+//     try {
+//         const token = req.headers.authorization.split(' ')[1]
+//         var decoded = jwt.verify(token, secret);
+//         res.json({ status: 'ok', decoded })
+//     } catch (err) {
+//         res.json({ status: 'err', message: err.message })
+//     }
+// });
+
+
+// ////////////////////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////// User Section ////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////////////////////
+
+// //Fetch users
+// app.get('/users', (req, res) => {
+//     const q = "SELECT * FROM users"
+//     db.query(q, (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json(data)
+//     });
+// });
+
+// //Fetch users email
+// // app.get('/useremail/:email', (req, res) => {
+// //     let email = req.params.email;
+// //     db.query("SELECT * FROM users WHERE email = ?", email,
+// //         (err, results, fields) => {
+// //             if (err) return res.json(err)
+// //             let message = "";
+// //             if (results === undefined || results.length == 0) {
+// //                 message = "email not found"
+// //             } else {
+// //                 message = "successfuly retrieved email data"
+// //             }
+// //             return res.send({ error: false, data: results[0], message: message })
+// //         })
+// // });
+
+// //Add users
+// app.post('/useradd', (req, res) => {
+//     const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
+//     const values = [
+//         req.body.title,
+//         req.body.fname,
+//         req.body.lname,
+//         req.body.age,
+//         req.body.phone,
+//         req.body.email,
+//         req.body.jobtitle,
+//         req.body.company,
+//         req.body.description,
+//     ];
+//     db.query(q, [values], (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json(data)
+//     })
+// })
+
+// //Fetch user by ID
+// app.get('/users/:id', (req, res) => {
+//     let id = req.params.id;
+//     db.query("SELECT * FROM users WHERE id = ?", id, (error, results, fields) => {
+//         if (error) throw error;
+//         let message = "";
+//         if (results === undefined || results.length == 0) {
+//             message = "users not found"
+//         } else {
+//             message = "successfuly retrieved users data"
+//         }
+//         return res.send({ error: false, data: results[0], message: message })
+//     })
+// })
+
+// //Update user
+// app.put('/usersupdate/:id', (req, res) => {
+//     const userId = req.params.id;
+//     const q = "UPDATE users SET `title` = ?, `fname` = ?, `lname` = ?,`age` = ?,`phone` = ?, `email` = ?, `jobtitle` = ?,`company` = ?,`description` = ? WHERE id = ?";
+
+//     const values = [
+//         req.body.title,
+//         req.body.fname,
+//         req.body.lname,
+//         req.body.age,
+//         req.body.phone,
+//         req.body.email,
+//         req.body.jobtitle,
+//         req.body.company,
+//         req.body.description,
+//     ];
+//     db.query(q, [...values, userId], (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json("Users has been updated successfully")
+//     });
+// })
+
+// //Delete user by ID
+// app.delete("/deleteuser/:id", (req, res) => {
+//     const userId = req.params.id;
+//     const q = "DELETE FROM users WHERE id = ?";
+
+//     db.query(q, [userId], (err, data) => {
+//         if (err) return res.json(err)
+//         return res.json("User has been deleted successfully")
+//     });
+// });
 
 
 
