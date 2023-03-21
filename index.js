@@ -149,6 +149,22 @@ app.get('/users', (req, res) => {
     });
 });
 
+//Fetch users email
+app.get('/useremail/:email', (req, res) => {
+    let email = req.params.email;
+    db.query("SELECT * FROM users WHERE email = ?", email,
+        (err, results, fields) => {
+            if (err) return res.json(err)
+            let message = "";
+            if (results === undefined || results.length == 0) {
+                message = "email not found"
+            } else {
+                message = "successfuly retrieved email data"
+            }
+            return res.send({ error: false, data: results[0], message: message })
+        })
+});
+
 //Add users
 app.post('/useradd', (req, res) => {
     const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`) VALUES (?)"
