@@ -6,6 +6,7 @@ const app = express();
 require('dotenv').config();
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
+var QRCode = require('qrcode');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -259,7 +260,7 @@ app.post('/useradd2', (req, res) => {
         company,
         description,
     ];
-    QRCode.toDataURL("http://localhost:3000/confirmboothsignin/"+email, {
+    QRCode.toDataURL("https://charming-goat-flannel-nightgown.cyclic.app/confirmboothsignin/"+email, {
         width: 800,
         margin: 1,
         color: {
