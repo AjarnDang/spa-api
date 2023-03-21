@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
-const mysql2 = require('mysql2');
 const app = express();
+
+const mysql2 = require('mysql2');
 require('dotenv').config();
+
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var QRCode = require('qrcode');
