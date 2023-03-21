@@ -262,7 +262,7 @@ app.post('/useradd2', (req, res) => {
         company,
         description,
     ];
-    QRCode.toDataURL("https://mservice-metrosystems-des.vercel.app/confirmboothsignin/"+email, {
+    QRCode.toDataURL("https://charming-goat-flannel-nightgown.cyclic.app/confirmboothsignin/"+email, {
         width: 800,
         margin: 1,
         color: {
