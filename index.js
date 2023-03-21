@@ -237,81 +237,81 @@ app.delete("/deleteuser/:id", (req, res) => {
 
 
 //Add user with QR
-// app.post('/useradd2', (req, res) => {
-//     const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`,`qrcode`) VALUES (?)"
-//     let title = req.body.title;
-//     let fname = req.body.fname;
-//     let lname = req.body.lname;
-//     let age = req.body.age;
-//     let phone = req.body.phone;
-//     let email = req.body.email;
-//     let jobtitle = req.body.jobtitle;
-//     let company = req.body.company;
-//     let description = req.body.description;
+app.post('/useradd2', (req, res) => {
+    const q = "INSERT INTO users (`title`,`fname`,`lname`,`age`,`phone`,`email`,`jobtitle`,`company`,`description`,`qrcode`) VALUES (?)"
+    let title = req.body.title;
+    let fname = req.body.fname;
+    let lname = req.body.lname;
+    let age = req.body.age;
+    let phone = req.body.phone;
+    let email = req.body.email;
+    let jobtitle = req.body.jobtitle;
+    let company = req.body.company;
+    let description = req.body.description;
 
-//     let values = [
-//         title,
-//         fname,
-//         lname,
-//         age,
-//         phone,
-//         email,
-//         jobtitle,
-//         company,
-//         description,
-//     ];
-//     QRCode.toDataURL("https://charming-goat-flannel-nightgown.cyclic.app/confirmboothsignin/"+email, {
-//         width: 800,
-//         margin: 1,
-//         color: {
-//             dark: '#000000',
-//             light: '#ffffff'
-//         }
-//     }, (err, qrcode) => {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             values.push(qrcode);
-//             console.log(values);
-//             db.query(q, [values], (err, results) => {
-//                 if (err) return res.json(err)
-//                 let message = "";
-//                 if (results === undefined || results.length == 0) {
-//                     message = "users not found"
-//                 } else {
-//                     message = "successfuly inserted users data"
-//                 }
-//                 return res.send({ error: false, data: results[0], message: message })
-//             })
-//         }
-//     })
-// })
+    let values = [
+        title,
+        fname,
+        lname,
+        age,
+        phone,
+        email,
+        jobtitle,
+        company,
+        description,
+    ];
+    QRCode.toDataURL("https://charming-goat-flannel-nightgown.cyclic.app/confirmboothsignin/"+email, {
+        width: 800,
+        margin: 1,
+        color: {
+            dark: '#000000',
+            light: '#ffffff'
+        }
+    }, (err, qrcode) => {
+        if (err) {
+            console.log(err)
+        } else {
+            values.push(qrcode);
+            console.log(values);
+            db.query(q, [values], (err, results) => {
+                if (err) return res.json(err)
+                let message = "";
+                if (results === undefined || results.length == 0) {
+                    message = "users not found"
+                } else {
+                    message = "successfuly inserted users data"
+                }
+                return res.send({ error: false, data: results[0], message: message })
+            })
+        }
+    })
+})
 
-// //User Booth Sign in
-// app.put('/user_booth_signin/:email', (req, res) => {
-//     const email = req.params.email;
-//     const q = "UPDATE users SET `status` = ? WHERE email = ?";
+//User Booth Sign in
+app.put('/user_booth_signin/:email', (req, res) => {
+    const email = req.params.email;
+    const q = "UPDATE users SET `status` = ? WHERE email = ?";
     
-//     const status = 1;
+    const status = 1;
 
-//     db.query(q, [status, email], (err, data) => {
-//         if (err) return res.json(err)
-//         return res.json("Users has been signed in successfully")
-//     });
-// })
+    db.query(q, [status, email], (err, data) => {
+        if (err) return res.json(err)
+        return res.json("Users has been signed in successfully")
+    });
+})
 
-// //User Booth Sign out
-// app.put('/user_booth_signout/:email', (req, res) => {
-//     const email = req.params.email;
-//     const q = "UPDATE users SET `status` = ? WHERE email = ?";
+//User Booth Sign out
+app.put('/user_booth_signout/:email', (req, res) => {
+    const email = req.params.email;
+    const q = "UPDATE users SET `status` = ? WHERE email = ?";
     
-//     const status = 2;
+    const status = 2;
 
-//     db.query(q, [status, email], (err, data) => {
-//         if (err) return res.json(err)
-//         return res.json("Users has been signed out successfully")
-//     });
-// })
+    db.query(q, [status, email], (err, data) => {
+        if (err) return res.json(err)
+        return res.json("Users has been signed out successfully")
+    });
+})
 
 //QR Code
 app.post('/qrcode', (req, res) => {
