@@ -262,7 +262,7 @@ app.post('/useradd2', (req, res) => {
         company,
         description,
     ];
-    QRCode.toDataURL("https://charming-goat-flannel-nightgown.cyclic.app/confirmboothsignin/"+email, {
+    QRCode.toDataURL("https://mservice-metrosystems-des.vercel.app/confirmboothsignin/"+email, {
         width: 800,
         margin: 1,
         color: {
@@ -282,8 +282,8 @@ app.post('/useradd2', (req, res) => {
                     message = "users not found"
                 } else {
                     message = "successfuly inserted users data"
-                }
-                return res.send({ error: false, data: results[0], message: message })
+                    return res.send({ error: false, data: results[0], message: message })
+                }              
             })
         }
     })
