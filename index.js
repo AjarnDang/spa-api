@@ -364,23 +364,61 @@ app.delete('/qrcode/del', (req, res) => {
     }
 })
 
+//Count all user
+app.get('/countallusers2', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM users',
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error retrieving data from database');
+      } else {
+        const count = results[0].count;
+        res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+      }
+    });
+  });
 
-// exports.countAllUsers = async (req, res) => {
-//     const uId = req.params.id;
-//     db.query(
-//         "SELECT COUNT(*) FROM users WHERE id = ?",
-//         [uId],
-//         (err, count) => {
-//             if (err) {
-//                 res.status(500).json({ err });
-//                 console.log(err);
-//             } else {
-//                 console.log(count)
-//                 res.status(200).json(count);
-//             }
-//         }
-//     );
-// };
+//Count all user active
+app.get('/countallusers_active', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM users WHERE status = 1',
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error retrieving data from database');
+      } else {
+        const count = results[0].count;
+        res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+      }
+    });
+  });
+
+//Count all user has QR code
+app.get('/countallusers_hasqrcode', (req, res) => {
+    db.query("SELECT COUNT(*) AS count FROM users WHERE qrcode != '' ",
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error retrieving data from database');
+      } else {
+        const count = results[0].count;
+        res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+      }
+    });
+  });
+
+//Count all user register today
+app.get('/countallusers_regtoday', (req, res) => {
+    const q = 'SELECT COUNT(*) AS count_reg FROM users WHERE DATE(created_at) = CURDATE()';
+    db.query(q, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error retrieving data from database');
+        } else {
+            const count = results[0].count_reg;
+            res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+        }
+    });
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// Other Backend ///////////////////////////////////////
