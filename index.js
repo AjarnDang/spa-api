@@ -420,6 +420,48 @@ app.get('/countallusers_regtoday', (req, res) => {
     });
 });
 
+//Count all user if male
+app.get('/countallusers_mr', (req, res) => {
+    const q = "SELECT COUNT(*) AS count_mr FROM users WHERE title = 'Mr.'";
+    db.query(q, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error retrieving data from database');
+        } else {
+            const count = results[0].count_mr;
+            res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+        }
+    });
+});
+
+//Count all user if Female 1
+app.get('/countallusers_ms', (req, res) => {
+    const q = "SELECT COUNT(*) AS count_ms FROM users WHERE title = 'Ms.'";
+    db.query(q, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error retrieving data from database');
+        } else {
+            const count = results[0].count_ms;
+            res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+        }
+    });
+});
+
+//Count all user if Female 2
+app.get('/countallusers_mrs', (req, res) => {
+    const q = "SELECT COUNT(*) AS count_mrs FROM users WHERE title = 'Mrs.'";
+    db.query(q, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error retrieving data from database');
+        } else {
+            const count = results[0].count_mrs;
+            res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+        }
+    });
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// Other Backend ///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
