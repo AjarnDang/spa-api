@@ -392,6 +392,20 @@ app.get('/countallusers_active', (req, res) => {
     });
   });
 
+//Count all user unactive
+app.get('/countallusers_unactive', (req, res) => {
+    db.query('SELECT COUNT(*) AS count FROM users WHERE status = 2',
+    (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send('Error retrieving data from database');
+      } else {
+        const count = results[0].count;
+        res.status(200).send({ count }); // ส่งค่า count กลับมาในรูปแบบ Object
+      }
+    });
+  });
+
 //Count all user has QR code
 app.get('/countallusers_hasqrcode', (req, res) => {
     db.query("SELECT COUNT(*) AS count FROM users WHERE qrcode != '' ",
