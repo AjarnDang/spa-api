@@ -289,10 +289,10 @@ app.post('/useradd2', (req, res) => {
     })
 })
 
-// //User Booth Sign in
+//User Booth Sign in
 app.put('/user_booth_signin/:email', (req, res) => {
     const email = req.params.email;
-    const q = "UPDATE users SET `status` = ? WHERE email = ?";
+    const q = "UPDATE users SET `status` = ?, `checked_in` = CURRENT_TIMESTAMP WHERE email = ?";
     
     const status = 1;
 
@@ -302,10 +302,10 @@ app.put('/user_booth_signin/:email', (req, res) => {
     });
 })
 
-//User Booth Sign out
+//User Booth Sign in
 app.put('/user_booth_signout/:email', (req, res) => {
     const email = req.params.email;
-    const q = "UPDATE users SET `status` = ? WHERE email = ?";
+    const q = "UPDATE users SET `status` = ?, `checked_out` = CURRENT_TIMESTAMP WHERE email = ?";
     
     const status = 2;
 
